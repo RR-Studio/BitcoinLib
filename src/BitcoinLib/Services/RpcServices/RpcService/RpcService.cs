@@ -463,7 +463,10 @@ namespace BitcoinLib.Services
                         };
 
                         decimal balance;
-                        decimal.TryParse(unstructuredResponse[i][j][1].ToString(), out balance);
+                        if (decimal.TryParse(unstructuredResponse[i][j][1].ToString(), out balance))
+                        {
+                            response.Balance = balance;
+                        }
 
                         if (unstructuredResponse[i][j].Count > 2)
                         {
@@ -569,7 +572,7 @@ namespace BitcoinLib.Services
 
         public string SendToAddress(string bitcoinAddress, decimal amount, string comment, string commentTo, bool subtractFeeFromAmount)
         {
-            return _rpcConnector.MakeRequest<string>(RpcMethods.sendtoaddress, bitcoinAddress, amount, comment, commentTo);
+            return _rpcConnector.MakeRequest<string>(RpcMethods.sendtoaddress, bitcoinAddress, amount, comment, commentTo, subtractFeeFromAmount);
         }
 
         public string SetAccount(string bitcoinAddress, string account)
